@@ -14,7 +14,9 @@ class MainActivity : AppCompatActivity() {
         val mediaList = arrayListOf(
             "/sdcard/SAMPLES/pic1.jpg",
             "/sdcard/SAMPLES/pic2.png",
+            "/sdcard/SAMPLES/pic-y.gif",
             "/sdcard/SAMPLES/logo1.png",
+            "/sdcard/SAMPLES/logo-x.png",
             "/sdcard/SAMPLES/logo2.png"
         )
 
@@ -23,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         // initialize homemade slideshow
         val hmSlideshow = HandmadeSlideshow(this, mySlideshow, mediaList)
+        hmSlideshow.setPhotoDelay(5) // sec
 
         // play slideshow
         hmSlideshow.play()
