@@ -13,11 +13,16 @@ class MainActivity : AppCompatActivity() {
         // define media list
         val mediaList = arrayListOf(
             "/sdcard/SAMPLES/pic1.jpg",
-            "/sdcard/SAMPLES/pic2.png",
-            "/sdcard/SAMPLES/pic-y.gif",
+            "/sdcard/SAMPLES/video1.mp4",
             "/sdcard/SAMPLES/logo1.png",
-            "/sdcard/SAMPLES/logo-x.png",
-            "/sdcard/SAMPLES/logo2.png"
+            "/sdcard/SAMPLES/pic2.png",
+            "/sdcard/SAMPLES/video2.mp4",
+            "/sdcard/SAMPLES/logo2.png",
+            "/sdcard/SAMPLES/logo3.png",
+            "/sdcard/SAMPLES/video3.mp4",
+            "/sdcard/SAMPLES/logo4.png",
+            "/sdcard/SAMPLES/video4.mp4",
+            "/sdcard/SAMPLES/video5.mp4"
         )
 
         // initialize root view
