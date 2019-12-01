@@ -15,6 +15,8 @@ class HandmadeSlideshow constructor(ctx: Context,
                                     private val mediaList: ArrayList<String>) {
 
     private val TAG = "HMSLIDESHOW"
+    private val TYPE_IMAGE = "TYPE_IMAGE"
+    private val TYPE_VIDEO = "TYPE_VIDEO"
     private val EXT_IMAGE = arrayListOf("jpg", "png")
     private val EXT_VIDEO = arrayListOf("mp4")
 
@@ -22,9 +24,14 @@ class HandmadeSlideshow constructor(ctx: Context,
     private val imageView = ImageView(ctx)
     private val videoView = VideoView(ctx)
 
+    // config
     private val mediaSize = mediaList.size
-    private var mediaIndex = 0
     private var photoDelay:Long = 60 // seconds
+
+    // app state
+    private var mediaIndex = 0
+    private var mediaType = TYPE_IMAGE
+    private var runInBackground = false
 
     init {
         // TODO show read-internal-storage permission dialog ( if required )
@@ -46,13 +53,15 @@ class HandmadeSlideshow constructor(ctx: Context,
         videoView.setOnCompletionListener { next() }
     }
 
-    /* ---------- PUBLIC FUNCTIONS ---------- */
+    /* ---------- PUBLIC FUNCTION(S) ---------- */
 
     fun setPhotoDelay(delay: Long) {
         photoDelay = delay
     }
 
-    fun play() {
+    /* ---------- INTERNAL FUNCTION(S) ---------- */
+
+    private fun play() {
         if (mediaSize == 0) return
 
         // build f
@@ -70,7 +79,7 @@ class HandmadeSlideshow constructor(ctx: Context,
             playImage(f.absolutePath)
 
             // do not refresh if have one media
-            if(mediaSize == 1) return
+            if (mediaSize == 1) return
 
             Handler().postDelayed({
                 next()
@@ -89,10 +98,9 @@ class HandmadeSlideshow constructor(ctx: Context,
         }
     }
 
-    /* ---------- INTERNAL FUNCTIONS ---------- */
-
-    // control flow function
+    // control flow
     private fun next() {
+        if (runInBackground) return
         if (mediaIndex < mediaSize-1) {
             mediaIndex++
         }
@@ -103,15 +111,25 @@ class HandmadeSlideshow constructor(ctx: Context,
     }
 
     private fun playImage(filePath: String) {
-        val bmp = BitmapFactory.decodeFile(filePath)
+        mediaType = TYPE_IMAGE
+
+        // toggle media view
         videoView.visibility = View.GONE
         imageView.visibility = View.VISIBLE
+
+        // set image
+        val bmp = BitmapFactory.decodeFile(filePath)
         imageView.setImageBitmap(bmp)
     }
 
     private fun playVideo(filePath: String) {
+        mediaType = TYPE_VIDEO
+
+        // toggle media view
         imageView.visibility = View.GONE
         videoView.visibility = View.VISIBLE
+
+        // play video
         videoView.setVideoPath(filePath)
         videoView.start()
     }
@@ -130,4 +148,21 @@ class HandmadeSlideshow constructor(ctx: Context,
             LinearLayout.LayoutParams.MATCH_PARENT
         )
     }
+
+    /* ---------- EVENTS ---------- */
+
+    fun onResume() {
+        runInBackground = false
+        play()
+    }
+
+    fun onPause() {
+        runInBackground = true
+        when (mediaType) {
+            TYPE_VIDEO -> {
+                if (videoView.isPlaying) videoView.stopPlayback()
+            }
+        }
+    }
+
 }
