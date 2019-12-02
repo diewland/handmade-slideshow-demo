@@ -1,22 +1,26 @@
 package com.diewland.handmadeslideshow
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var hmSlideshow :HandmadeSlideshow
 
+    @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val sdPath = Environment.getExternalStorageDirectory().toString()
+
         // define media list
         val mediaList = arrayListOf(
-            "/sdcard/SAMPLES/pic1.jpg",
-            "/sdcard/SAMPLES/pic2.png",
-            "/sdcard/SAMPLES/video5.mp4"
+            "$sdPath/SAMPLES/pic1.jpg",
+            "$sdPath/SAMPLES/pic2.png",
+            "$sdPath/SAMPLES/video5.mp4"
         )
 
         // initialize root view

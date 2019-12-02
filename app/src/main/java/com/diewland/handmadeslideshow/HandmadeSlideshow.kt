@@ -2,6 +2,7 @@ package com.diewland.handmadeslideshow
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Handler
 import android.util.Log
 import android.view.View
@@ -120,7 +121,7 @@ class HandmadeSlideshow constructor(ctx: Context,
         // play image
         else if (checkImageExt(f.extension)) {
             Log.d(TAG, "#$mediaIndex [PASS] $filePath")
-            playImage(f.absolutePath)
+            playImage(f)
 
             // do not refresh if have one media
             if (mediaList.size == 1) return
@@ -131,7 +132,7 @@ class HandmadeSlideshow constructor(ctx: Context,
         // play video
         else if (checkVideoExt(f.extension)) {
             Log.d(TAG, "#$mediaIndex [PASS] $filePath")
-            playVideo(f.absolutePath)
+            playVideo(f)
         }
 
         // extension does not support
@@ -151,7 +152,7 @@ class HandmadeSlideshow constructor(ctx: Context,
         play()
     }
 
-    private fun playImage(filePath: String) {
+    private fun playImage(f: File) {
         mediaType = TYPE_IMAGE
 
         // toggle media view
@@ -159,11 +160,11 @@ class HandmadeSlideshow constructor(ctx: Context,
         imageView.visibility = View.VISIBLE
 
         // set image
-        val bmp = BitmapFactory.decodeFile(filePath)
+        val bmp = BitmapFactory.decodeFile(f.absolutePath)
         imageView.setImageBitmap(bmp)
     }
 
-    private fun playVideo(filePath: String) {
+    private fun playVideo(f: File) {
         mediaType = TYPE_VIDEO
 
         // toggle media view
@@ -171,7 +172,7 @@ class HandmadeSlideshow constructor(ctx: Context,
         videoView.visibility = View.VISIBLE
 
         // play video
-        videoView.setVideoPath(filePath)
+        videoView.setVideoURI(Uri.fromFile(f))
         videoView.start()
     }
 
