@@ -79,6 +79,10 @@ class HandmadeSlideshow constructor(ctx: Context,
 
     /* ---------- UPDATE SLIDESHOW ---------- */
 
+    fun addMedia(mediaPath: String) {
+        mediaList.add(mediaPath)
+    }
+
     fun updateMedia(newMediaList: ArrayList<String>) {
         clearMedia()
         for (m in newMediaList) {
