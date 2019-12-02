@@ -12,7 +12,7 @@ import java.io.File
 
 class HandmadeSlideshow constructor(ctx: Context,
                                     rootView: LinearLayout,
-                                    private val mediaList: ArrayList<String>) {
+                                    private val mediaList: ArrayList<String> = arrayListOf()) {
 
     private val TAG = "HMSLIDESHOW"
     private val TYPE_IMAGE = "TYPE_IMAGE"
@@ -25,13 +25,16 @@ class HandmadeSlideshow constructor(ctx: Context,
     private val videoView = VideoView(ctx)
 
     // config
-    private val mediaSize = mediaList.size
     private var photoDelay:Long = 60 // seconds
 
     // app state
     private var mediaIndex = 0
     private var mediaType = TYPE_IMAGE
-    private var runInBackground = false
+    private var isPlaying = false
+
+    // image thread
+    private var imgHandler = Handler()
+    private var playNextImage: Runnable
 
     init {
         // TODO show read-internal-storage permission dialog ( if required )
@@ -49,20 +52,61 @@ class HandmadeSlideshow constructor(ctx: Context,
         imageView.visibility = View.GONE
         videoView.visibility = View.GONE
 
-        // play next slide when video play done
+        // play next slide when image/video play done
+        playNextImage = Runnable { next() }
         videoView.setOnCompletionListener { next() }
     }
 
-    /* ---------- PUBLIC FUNCTION(S) ---------- */
+    /* ---------- CONTROL SLIDESHOW ---------- */
+
+    fun start() {
+        isPlaying = true
+        play()
+    }
+
+    fun stop() {
+        isPlaying = false
+        when (mediaType) {
+            TYPE_IMAGE -> {
+                imgHandler.removeCallbacks(playNextImage)
+            }
+            TYPE_VIDEO -> {
+                if (videoView.isPlaying) videoView.stopPlayback()
+            }
+        }
+    }
+
+    /* ---------- UPDATE SLIDESHOW ---------- */
+
+    fun updateMedia(newMediaList: ArrayList<String>) {
+        clearMedia()
+        for (m in newMediaList) {
+            mediaList.add(m)
+        }
+    }
+
+    fun clearMedia() {
+        mediaList.clear()
+    }
 
     fun setPhotoDelay(delay: Long) {
         photoDelay = delay
     }
 
+    /* ---------- BIND APP EVENTS ---------- */
+
+    fun onResume() {
+        if (!isPlaying) start()
+    }
+
+    fun onPause() {
+        if (isPlaying) stop()
+    }
+
     /* ---------- INTERNAL FUNCTION(S) ---------- */
 
     private fun play() {
-        if (mediaSize == 0) return
+        if (mediaList.size == 0) return
 
         // build f
         val filePath = mediaList[mediaIndex]
@@ -79,11 +123,9 @@ class HandmadeSlideshow constructor(ctx: Context,
             playImage(f.absolutePath)
 
             // do not refresh if have one media
-            if (mediaSize == 1) return
+            if (mediaList.size == 1) return
 
-            Handler().postDelayed({
-                next()
-            }, photoDelay * 1000)
+            imgHandler.postDelayed(playNextImage, photoDelay * 1000)
         }
 
         // play video
@@ -100,8 +142,7 @@ class HandmadeSlideshow constructor(ctx: Context,
 
     // control flow
     private fun next() {
-        if (runInBackground) return
-        if (mediaIndex < mediaSize-1) {
+        if (mediaIndex < mediaList.size-1) {
             mediaIndex++
         }
         else {
@@ -147,22 +188,6 @@ class HandmadeSlideshow constructor(ctx: Context,
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.MATCH_PARENT
         )
-    }
-
-    /* ---------- EVENTS ---------- */
-
-    fun onResume() {
-        runInBackground = false
-        play()
-    }
-
-    fun onPause() {
-        runInBackground = true
-        when (mediaType) {
-            TYPE_VIDEO -> {
-                if (videoView.isPlaying) videoView.stopPlayback()
-            }
-        }
     }
 
 }

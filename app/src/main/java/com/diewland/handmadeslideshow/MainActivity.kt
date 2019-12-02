@@ -23,7 +23,8 @@ class MainActivity : AppCompatActivity() {
         val mySlideshow: LinearLayout = findViewById(R.id.my_slideshow)
 
         // initialize homemade slideshow
-        hmSlideshow = HandmadeSlideshow(this, mySlideshow, mediaList)
+        hmSlideshow = HandmadeSlideshow(this, mySlideshow)
+        hmSlideshow.updateMedia(mediaList)
         hmSlideshow.setPhotoDelay(5) // sec
     }
 
