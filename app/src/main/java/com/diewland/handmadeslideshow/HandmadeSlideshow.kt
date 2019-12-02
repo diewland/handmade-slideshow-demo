@@ -22,8 +22,8 @@ class HandmadeSlideshow constructor(ctx: Context,
     private val EXT_VIDEO = arrayListOf("mp4")
 
     // views
-    private val imageView = ImageView(ctx)
-    private val videoView = VideoView(ctx)
+    val imageView = ImageView(ctx)
+    val videoView = VideoView(ctx)
 
     // config
     private var photoDelay:Long = 60 // seconds
