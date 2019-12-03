@@ -108,6 +108,16 @@ class HandmadeSlideshow constructor(ctx: Context,
         if (isPlaying) stop()
     }
 
+    /* ---------- UTILITIES ---------- */
+
+    fun checkImageExt(ext: String): Boolean {
+        return EXT_IMAGE.contains(ext.toLowerCase())
+    }
+
+    fun checkVideoExt(ext: String): Boolean {
+        return EXT_VIDEO.contains(ext.toLowerCase())
+    }
+
     /* ---------- INTERNAL FUNCTION(S) ---------- */
 
     private fun play() {
@@ -178,14 +188,6 @@ class HandmadeSlideshow constructor(ctx: Context,
         // play video
         videoView.setVideoURI(Uri.fromFile(f))
         videoView.start()
-    }
-
-    private fun checkImageExt(ext: String): Boolean {
-        return EXT_IMAGE.contains(ext.toLowerCase())
-    }
-
-    private fun checkVideoExt(ext: String): Boolean {
-        return EXT_VIDEO.contains(ext.toLowerCase())
     }
 
     private fun getLLParams(): LinearLayout.LayoutParams {
