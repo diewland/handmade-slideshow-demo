@@ -91,6 +91,7 @@ class HandmadeSlideshow constructor(ctx: Context,
     }
 
     fun clearMedia() {
+        mediaIndex = 0
         mediaList.clear()
     }
 
