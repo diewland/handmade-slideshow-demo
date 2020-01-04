@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Handler
 import android.util.Log
 import android.view.View
+import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.VideoView
@@ -18,12 +19,14 @@ class HandmadeSlideshow constructor(ctx: Context,
     private val TAG = "HMSLIDESHOW"
     private val TYPE_IMAGE = "TYPE_IMAGE"
     private val TYPE_VIDEO = "TYPE_VIDEO"
-    private val EXT_IMAGE = arrayListOf("jpg", "png")
+    private val EXT_IMAGE = arrayListOf("jpg", "png", "gif")
     private val EXT_VIDEO = arrayListOf("mp4")
+    private val EXT_GIF = arrayListOf("gif")
 
     // views
     val imageView = ImageView(ctx)
     val videoView = VideoView(ctx)
+    val webView = WebView(ctx)
 
     // config
     private var photoDelay:Long = 60 // seconds
@@ -44,14 +47,17 @@ class HandmadeSlideshow constructor(ctx: Context,
         rootView.removeAllViews()
         rootView.addView(imageView)
         rootView.addView(videoView)
+        rootView.addView(webView)
 
         // set up layout params
         imageView.layoutParams = getLLParams()
         videoView.layoutParams = getLLParams()
+        webView.layoutParams = getLLParams()
 
         // hide all
         imageView.visibility = View.GONE
         videoView.visibility = View.GONE
+        webView.visibility = View.GONE
 
         // play next slide when image/video play done
         playNextImage = Runnable { next() }
@@ -119,6 +125,31 @@ class HandmadeSlideshow constructor(ctx: Context,
         return EXT_VIDEO.contains(ext.toLowerCase())
     }
 
+    fun checkGifExt(ext: String): Boolean {
+        return EXT_GIF.contains(ext.toLowerCase())
+    }
+
+    fun renderHTML(html: String="") {
+        webView.loadDataWithBaseURL(null, html, "text/html","utf-8",null)
+    }
+
+    fun renderHTMLImage(path: String) {
+        val html = """
+        |<html>
+        |    <head>
+        |        <style type="text/css">
+        |            html, body { padding: 0px; margin: 0px; }
+        |            img { width: 100%; }
+        |        </style>
+        |    </head>
+        |    <body>
+        |        <img src="file:///$path">
+        |    </body>
+        |</html>
+        """.trimMargin()
+        renderHTML(html)
+    }
+
     /* ---------- INTERNAL FUNCTION(S) ---------- */
 
     private fun play() {
@@ -136,7 +167,10 @@ class HandmadeSlideshow constructor(ctx: Context,
         // play image
         else if (checkImageExt(f.extension)) {
             Log.d(TAG, "#$mediaIndex [PASS] $filePath")
-            playImage(f)
+            when {
+                checkGifExt(f.extension) -> playGif(f)
+                else -> playImage(f)
+            }
 
             // do not refresh if have one media
             if (mediaList.size == 1) return
@@ -173,6 +207,8 @@ class HandmadeSlideshow constructor(ctx: Context,
         // toggle media view
         videoView.visibility = View.GONE
         imageView.visibility = View.VISIBLE
+        webView.visibility = View.GONE
+        renderHTML("")
 
         // set image
         val bmp = BitmapFactory.decodeFile(f.absolutePath)
@@ -185,10 +221,24 @@ class HandmadeSlideshow constructor(ctx: Context,
         // toggle media view
         imageView.visibility = View.GONE
         videoView.visibility = View.VISIBLE
+        webView.visibility = View.GONE
+        renderHTML("")
 
         // play video
         videoView.setVideoURI(Uri.fromFile(f))
         videoView.start()
+    }
+
+    private fun playGif(f: File) {
+        mediaType = TYPE_IMAGE
+
+        // toggle media view
+        imageView.visibility = View.GONE
+        videoView.visibility = View.GONE
+        webView.visibility = View.VISIBLE
+
+        // set image
+        renderHTMLImage(f.absolutePath)
     }
 
     private fun getLLParams(): LinearLayout.LayoutParams {
