@@ -14,7 +14,8 @@ import java.io.File
 
 class HandmadeSlideshow constructor(ctx: Context,
                                     rootView: LinearLayout,
-                                    private val mediaList: ArrayList<String> = arrayListOf()) {
+                                    private val mediaList: ArrayList<String> = arrayListOf(),
+                                    muteVideo: Boolean = false) {
 
     private val TAG = "HMSLIDESHOW"
     private val TYPE_IMAGE = "TYPE_IMAGE"
@@ -58,6 +59,13 @@ class HandmadeSlideshow constructor(ctx: Context,
         imageView.visibility = View.GONE
         videoView.visibility = View.GONE
         webView.visibility = View.GONE
+
+        // mute video
+        if (muteVideo) {
+            videoView.setOnPreparedListener { mp ->
+                mp.setVolume(0f, 0f)
+            }
+        }
 
         // play next slide when image/video play done
         playNextImage = Runnable { next() }
