@@ -20,7 +20,7 @@ class HandmadeSlideshow constructor(ctx: Context,
     private val TAG = "HMSLIDESHOW"
     private val TYPE_IMAGE = "TYPE_IMAGE"
     private val TYPE_VIDEO = "TYPE_VIDEO"
-    private val EXT_IMAGE = arrayListOf("jpg", "png", "gif")
+    private val EXT_IMAGE = arrayListOf("jpg", "jpeg", "png", "gif")
     private val EXT_VIDEO = arrayListOf("mp4")
     private val EXT_GIF = arrayListOf("gif")
 
