@@ -1,0 +1,3 @@
+[submodule "app/src/main/java/com/diewland/handmadeslideshow"]
+	path = app/src/main/java/com/diewland/handmadeslideshow
+	url = https://github.com/diewland/handmade-slideshow.git

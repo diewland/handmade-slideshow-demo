@@ -1,13 +1,14 @@
-package com.diewland.handmadeslideshow
+package com.diewland.hmdemo
 
 import android.os.Bundle
 import android.os.Environment
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.diewland.handmadeslideshow.HandmadeSlideshow
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var hmSlideshow :HandmadeSlideshow
+    lateinit var hmSlideshow : HandmadeSlideshow
     lateinit var hmSlideshow2 :HandmadeSlideshow
 
     @Suppress("DEPRECATION")

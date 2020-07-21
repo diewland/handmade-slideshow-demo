@@ -1,4 +1,4 @@
-package com.diewland.handmadeslideshow
+package com.diewland.hmdemo
 
 import org.junit.Test
 
