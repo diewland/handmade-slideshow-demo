@@ -66,6 +66,8 @@ class HandmadeSlideshow constructor(ctx: Context,
                 mp.setVolume(0f, 0f)
             }
         }
+        // remove dim from video
+        videoView.setZOrderOnTop(true)
 
         // play next slide when image/video play done
         playNextImage = Runnable { next() }
@@ -124,6 +126,10 @@ class HandmadeSlideshow constructor(ctx: Context,
     }
 
     /* ---------- UTILITIES ---------- */
+
+    fun isEmptyMediaList(): Boolean {
+        return mediaList.size == 0
+    }
 
     fun checkImageExt(ext: String): Boolean {
         return EXT_IMAGE.contains(ext.toLowerCase())
