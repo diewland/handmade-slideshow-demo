@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.diewland.handmadeslideshow.HandmadeSlideshow
+import com.diewland.hmslideshow.HandmadeSlideshow
 
 class MainActivity : AppCompatActivity() {
 
