@@ -8,8 +8,19 @@ import com.diewland.hmslideshow.HandmadeSlideshow
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var hmSlideshow : HandmadeSlideshow
-    lateinit var hmSlideshow2 :HandmadeSlideshow
+    val layoutIds = listOf(
+        R.id.p1
+        //R.id.p2,
+        //R.id.p3,
+        //R.id.p4,
+        //R.id.p5,
+        //R.id.p6,
+        //R.id.p7,
+        //R.id.p8,
+        //R.id.p9,
+        //R.id.p10
+    )
+    val hmList = arrayListOf<HandmadeSlideshow>()
 
     @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,39 +31,30 @@ class MainActivity : AppCompatActivity() {
 
         // define media list
         val mediaList = arrayListOf(
-            //"$sdPath/SAMPLES/pic1.jpg",
-            //"$sdPath/SAMPLES/pic2.png",
+            "$sdPath/SAMPLES/video3.mp4",
             "$sdPath/SAMPLES/video5.mp4"
         )
-        val mediaList2 = arrayListOf(
-            "$sdPath/SAMPLES/video3.mp4"
-        )
 
-        // initialize root view
-        val mySlideshow: LinearLayout = findViewById(R.id.my_slideshow)
-        val mySlideshow2: LinearLayout = findViewById(R.id.my_slideshow2)
-
-        // initialize homemade slideshow
-        hmSlideshow = HandmadeSlideshow(this, mySlideshow)
-        hmSlideshow.updateMedia(mediaList)
-        //hmSlideshow.setPhotoDelay(5) // sec
-
-        // initialize homemade slideshow #2
-        hmSlideshow2 = HandmadeSlideshow(this, mySlideshow2, muteVideo = true)
-        hmSlideshow2.updateMedia(mediaList2)
-        //hmSlideshow2.setPhotoDelay(5) // sec
+        // init hm list
+        layoutIds.forEach {
+            // initialize root view
+            val ll = findViewById<LinearLayout>(it)
+            // initialize handmade slideshow
+            val hm = HandmadeSlideshow(this, ll)
+            hm.updateMedia(mediaList)
+            // add to hm list
+            hmList.add(hm)
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        hmSlideshow.onResume()
-        hmSlideshow2.onResume()
+        hmList.forEach { it.onResume() }
     }
 
     override fun onPause() {
         super.onPause()
-        hmSlideshow.onPause()
-        hmSlideshow2.onPause()
+        hmList.forEach { it.onPause() }
     }
 
 }
