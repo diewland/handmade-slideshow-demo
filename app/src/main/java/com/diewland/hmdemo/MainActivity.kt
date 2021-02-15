@@ -9,16 +9,16 @@ import com.diewland.hmslideshow.HandmadeSlideshow
 class MainActivity : AppCompatActivity() {
 
     val layoutIds = listOf(
-        R.id.p1
-        //R.id.p2,
-        //R.id.p3,
-        //R.id.p4,
-        //R.id.p5,
-        //R.id.p6,
-        //R.id.p7,
-        //R.id.p8,
-        //R.id.p9,
-        //R.id.p10
+        R.id.p1,
+        R.id.p2,
+        R.id.p3,
+        R.id.p4,
+        R.id.p5,
+        R.id.p6,
+        R.id.p7,
+        R.id.p8,
+        R.id.p9,
+        R.id.p10
     )
     val hmList = arrayListOf<HandmadeSlideshow>()
 
