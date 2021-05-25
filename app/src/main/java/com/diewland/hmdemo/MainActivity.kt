@@ -1,82 +1,46 @@
 package com.diewland.hmdemo
 
 import android.os.Bundle
-import android.os.Environment
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
-import com.diewland.hmslideshow.FullScreenSlideshow
 import com.diewland.hmslideshow.HandmadeSlideshow
 
 class MainActivity : AppCompatActivity() {
 
-    /*
-    val layoutIds = listOf(
-        R.id.p1,
-        R.id.p2,
-        R.id.p3,
-        R.id.p4,
-        R.id.p5,
-        R.id.p6,
-        R.id.p7,
-        R.id.p8,
-        R.id.p9,
-        R.id.p10
-    )
-    val hmList = arrayListOf<HandmadeSlideshow>()
-    */
+    lateinit var hm: HandmadeSlideshow
 
-    lateinit var screenSaver: FullScreenSlideshow
-    lateinit var engine: HandmadeSlideshow
-
-    @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // prepare sdcard path
-        val sdPath = Environment.getExternalStorageDirectory().toString()
-
-        /*
-        // define media list
-        val mediaList = arrayListOf(
-            "$sdPath/SAMPLES/video3.mp4",
-            "$sdPath/SAMPLES/video5.mp4"
+        // create playlist
+        val playlist = arrayListOf(
+            "/sdcard/video1.mp4",
+            "/sdcard/video2.mp4",
+            "/sdcard/video3.mp4",
         )
 
-        // init hm list
-        layoutIds.forEach {
-            // initialize root view
-            val ll = findViewById<LinearLayout>(it)
-            // initialize handmade slideshow
-            val hm = HandmadeSlideshow(this, ll)
-            hm.updateMedia(mediaList)
-            // add to hm list
-            hmList.add(hm)
-        }
-        */
+        // prepare surface
+        val surface = findViewById<LinearLayout>(R.id.slide1)
 
-        // prepare modules
-        screenSaver = FullScreenSlideshow(this, 1080, 1920)
-        engine = screenSaver.slideshow
-
-        // config
-        engine.updateMedia(arrayListOf(
-            "$sdPath/img1.jpeg",
-            "$sdPath/img2.jpeg",
-        ))
-        engine.setPhotoDelay(0.1.toLong()) // test out of memory
+        // init handmade slideshow and play
+        hm = HandmadeSlideshow(this, surface, playlist)
+        hm.start()
     }
 
     override fun onResume() {
         super.onResume()
-        //hmList.forEach { it.onResume() }
-        screenSaver.start()
+        hm.onResume() // <--
     }
 
     override fun onPause() {
         super.onPause()
-        //hmList.forEach { it.onPause() }
-        screenSaver.stop()
+        hm.onPause() // <--
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        hm.stop() // <--
     }
 
 }
