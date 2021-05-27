@@ -19,10 +19,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // create playlist
-        val playlist = arrayListOf(
+        val playlistA = arrayListOf(
             "/sdcard/video1.mp4",
             "/sdcard/image1.jpg",
             "/sdcard/video2.mp4",
+        )
+        val playlistB = arrayListOf(
             "/sdcard/image2.jpg",
             "/sdcard/video3.mp4",
         )
@@ -31,15 +33,15 @@ class MainActivity : AppCompatActivity() {
         val surface = findViewById<LinearLayout>(R.id.slide1)
 
         // init handmade slideshow and play
-        hm = HandmadeSlideshow(this, surface, playlist)
+        hm = HandmadeSlideshow(this, surface, playlistA)
         hm.setPhotoDelay(5)
         hm.start()
 
-        // init fullscreen slideshow and linked handmade slideshow events
+        // init fullscreen slideshow and link with handmade slideshow
         fs = FullScreenSlideshow(this, 1080, 1920) {
             hm.start() // start handmade slideshow when exit fullscreen
         }
-        fs.slideshow.updateMedia(playlist)
+        fs.slideshow.updateMedia(playlistB)
         fs.slideshow.setPhotoDelay(5)
         findViewById<Button>(R.id.btn_fullscreen).setOnClickListener {
             hm.stop() // stop handmade slideshow before enter fullscreen
