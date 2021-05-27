@@ -6,6 +6,15 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/btn_fullscreen"
+        style="@style/TextAppearance.AppCompat.Large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="32dp"
+        android:text="FullScreen"
+        android:textSize="20sp" />
+
     <LinearLayout
         android:id="@+id/slide1"
         android:layout_width="match_parent"
