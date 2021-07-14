@@ -20,11 +20,18 @@ class MainActivity : AppCompatActivity() {
 
         // create playlist
         val playlist = arrayListOf(
-            "/sdcard/video1.mp4",
-            //"/sdcard/image1.jpg",
-            "/sdcard/video2.mp4",
-            //"/sdcard/image2.jpg",
-            "/sdcard/video3.mp4",
+            // close after 10m, no adb, vysor connect
+            //"/sdcard/video1.mp4",
+            //"/sdcard/video2.mp4",
+            //"/sdcard/video3.mp4",
+
+            // testing <=25MB
+            "/sdcard/mp4/kaset_5.mp4",
+            "/sdcard/mp4/coke_6.mp4",
+            "/sdcard/mp4/thaiha_14.mp4",
+            "/sdcard/mp4/travel_20.mp4",
+            "/sdcard/mp4/pana_22.mp4",
+            "/sdcard/mp4/boss_26.mp4",
         )
 
         // prepare surface
