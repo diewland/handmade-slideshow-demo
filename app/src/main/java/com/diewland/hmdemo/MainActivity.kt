@@ -30,13 +30,17 @@ class MainActivity : AppCompatActivity() {
         // prepare surface
         val surface = findViewById<LinearLayout>(R.id.slide1)
 
+        // volume control
+        val mainVolume = 1f
+        val fsVolume = mainVolume * 0.2f
+
         // init handmade slideshow and play
-        hm = HandmadeSlideshow(this, surface, playlist)
+        hm = HandmadeSlideshow(this, surface, playlist, volume = mainVolume)
         hm.setPhotoDelay(5)
         hm.start()
 
         // init fullscreen slideshow and link with handmade slideshow
-        fs = FullScreenSlideshow(this, 1080, 1920) {
+        fs = FullScreenSlideshow(this, 1080, 1920, fsVolume) {
             hm.start() // start handmade slideshow when exit fullscreen
         }
         fs.slideshow.updateMedia(playlist)
@@ -56,12 +60,6 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         hm.onPause() // <-- binded
         fs.stop() // <-- binded
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        hm.onDestroy() // <-- binded
-        fs.destroy() // <-- binded
     }
 
 }
