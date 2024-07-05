@@ -1,6 +1,7 @@
 package com.diewland.hmdemo
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -45,6 +46,14 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_fullscreen).setOnClickListener {
             hm.stop() // stop handmade slideshow before enter fullscreen
             fs.start()
+        }
+
+        // navigate slideshow
+        findViewById<Button>(R.id.btn_back).setOnClickListener {
+            Log.d(TAG, "press back") // TODO
+        }
+        findViewById<Button>(R.id.btn_next).setOnClickListener {
+            Log.d(TAG, "press next") // TODO
         }
     }
 
