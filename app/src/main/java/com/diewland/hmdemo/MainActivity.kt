@@ -49,12 +49,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         // navigate slideshow
-        findViewById<Button>(R.id.btn_back).setOnClickListener {
-            Log.d(TAG, "press back") // TODO
-        }
-        findViewById<Button>(R.id.btn_next).setOnClickListener {
-            Log.d(TAG, "press next") // TODO
-        }
+        findViewById<Button>(R.id.btn_back).setOnClickListener { hm.back() }
+        findViewById<Button>(R.id.btn_next).setOnClickListener { hm.next() }
     }
 
     override fun onResume() {
