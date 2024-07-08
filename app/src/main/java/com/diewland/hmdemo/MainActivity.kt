@@ -21,9 +21,9 @@ class MainActivity : AppCompatActivity() {
 
         // create playlist
         val playlist = arrayListOf(
-            //"/sdcard/video1.mp4",
+            "/sdcard/video1.mp4",
             "/sdcard/image1.jpg",
-            //"/sdcard/video2.mp4",
+            "/sdcard/video2.mp4",
             "/sdcard/image2.jpg",
             //"/sdcard/video3.mp4",
             "/sdcard/image3.jpg",
@@ -41,9 +41,29 @@ class MainActivity : AppCompatActivity() {
         fs = FullScreenSlideshow(this, 1080, 1920, repeat = false) {
             hm.start() // start handmade slideshow when exit fullscreen
         }
-        fs.slideshow.updateMedia(playlist)
         fs.slideshow.setPhotoDelay(5)
-        findViewById<Button>(R.id.btn_fullscreen).setOnClickListener {
+        findViewById<Button>(R.id.btn_fs1).setOnClickListener {
+            playFs(
+                "/sdcard/image1.jpg",
+                "/sdcard/image2.jpg",
+                "/sdcard/image3.jpg",
+            )
+        }
+        findViewById<Button>(R.id.btn_fs2).setOnClickListener {
+            playFs(
+                "/sdcard/video1.mp4",
+                "/sdcard/video2.mp4",
+            )
+            hm.stop() // stop handmade slideshow before enter fullscreen
+            fs.start()
+        }
+        findViewById<Button>(R.id.btn_fs3).setOnClickListener {
+            playFs(
+                "/sdcard/image1.jpg",
+                "/sdcard/video1.mp4",
+                "/sdcard/image2.jpg",
+                "/sdcard/video2.mp4",
+            )
             hm.stop() // stop handmade slideshow before enter fullscreen
             fs.start()
         }
@@ -68,6 +88,13 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         hm.onDestroy() // <-- binded
         fs.destroy() // <-- binded
+    }
+
+    private fun playFs(vararg args: String) {
+        val playlist = ArrayList(args.toList())
+        fs.slideshow.updateMedia(playlist) // bundle reset index to zero
+        hm.stop() // stop handmade slideshow before enter fullscreen
+        fs.start()
     }
 
 }
