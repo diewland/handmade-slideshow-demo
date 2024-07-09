@@ -21,12 +21,12 @@ class MainActivity : AppCompatActivity() {
 
         // create playlist
         val playlist = arrayListOf(
-            "/sdcard/video1.mp4",
+            //"/sdcard/video1.mp4",
             "/sdcard/image1.jpg",
-            "/sdcard/video2.mp4",
+            //"/sdcard/video2.mp4",
             "/sdcard/image2.jpg",
             //"/sdcard/video3.mp4",
-            "/sdcard/image3.jpg",
+            //"/sdcard/image3.jpg",
         )
 
         // prepare surface
@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity() {
             hm.start() // start handmade slideshow when exit fullscreen
         }
         fs.slideshow.setPhotoDelay(5)
+        fs.slideshow.setOnPlaylistEnded { fs.physicalClose() }
+
         findViewById<Button>(R.id.btn_fs1).setOnClickListener {
             playFs(
                 "/sdcard/image1.jpg",
